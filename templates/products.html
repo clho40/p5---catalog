@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+<!--Show products by catagory-->
+{% block content %} 
+<div class="jumbotron">
+    <h1>{{sel_catagory.name}}</h1>
+    <p>{{sel_catagory.description}}</p>
+    <!--Only allow user to edit/delete the catagory if they are the creator of it-->
+    {% if user_id==sel_catagory.user_id %}
+    <a href="{{url_for('editCatagory',cid=sel_catagory.id)}}" class="btn btn-link" role="button">Edit</a>
+    <a href="{{url_for('deleteCatagory',cid=sel_catagory.id)}}" class="btn btn-link" role="button">Delete</a>
+    {% endif %}
+</div>
+<ul class="list-group">
+    <!--Show the products according to the selected catagory-->
+    {% for product in products %}
+    <li style="list-style: none;">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div style="float:left;margin: 0 10px; width:100px;">
+                    <!--If the product has an image, display it, else, display a default "No image" image-->
+                    {% if product.image %}
+                    <img src="http://localhost:8000/{{ product.image }}" style="width:100px;height:100px" alt="{{product.name}}">
+                    {% else %}
+                    <img src="http://localhost:8000/static/uploads/default/no_img.jpg" style="width:100px;height:100px" alt="{{product.name}}">
+                    {% endif %}
+                </div>
+                <div style="float:left;margin: 0 10px; width:200px;">
+                    <p><strong>{{product.name}}</strong></p>
+                    <p>{{product.description}}</p>
+                </div>
+                <div style="float:left;margin: 0 10px; width:100px;">
+                    <p><strong>Price</strong></p>
+                    <p>{{product.price}}</p>
+                </div>
+                <div style="float:left;margin: 0 10px; width:100px;">
+                    <p><strong>Flavour</strong></p>
+                    <p>{{product.flavour}}</p>
+                </div>
+                <div style="float:left;margin: 0 10px;">
+                    <!--Only allow user to edit/delete the product information of they are the creator of it-->
+                    {% if user_id==product.user_id %}
+                    <a href="{{url_for('editProduct',cid=sel_catagory.id,pid=product.id)}}" class="btn btn-link" role="button">Edit</a>
+                    <a href="{{url_for('deleteProduct',cid=sel_catagory.id,pid=product.id)}}" class="btn btn-link" role="button">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+<!--Content for delete product-->
+{% block content %} 
+<div class="jumbotron">
+    <h1>Delete Product</h1>
+</div>
+<!--Delete confirmation form-->
+<form class="form-horizontal" role="form" method="POST" action="{{url_for('deleteProduct',cid=sel_catagory.id,pid=sel_product.id)}}">
+    <div class="form-group">
+        <!--Protect against Cross-Site Request Forgery (CSRF)-->
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <label class="control-label col-sm-2">Confirm delete product <span style="color:#FF0000;">{{sel_product.name}}</span> ?</label>
+        <button type="submit" class="btn btn-default">Yes</button>
+        <a href="{{url_for('showProducts',cid=sel_catagory.id)}}" class="btn btn-default">No</a>
+    </div>
+</form>
+{% endblock %}

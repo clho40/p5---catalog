@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+<!--Content for delete catagory-->
+{% block content %}
+<div class="jumbotron">
+    <h1>Delete Catagory</h1>
+</div>
+<!--Delete confirmation form-->
+<form class="form-horizontal" role="form" method="POST" action="{{url_for('deleteCatagory',cid=sel_catagory.id)}}">
+    <div class="form-group">
+        <!--Protect against Cross-Site Request Forgery (CSRF)-->
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <label class="control-label col-sm-2">Confirm delete catagory <span style="color:#FF0000;">{{sel_catagory.name}}</span> ?</label>
+        <button type="submit" class="btn btn-default">Yes</button>
+        <a href="{{url_for('IndexPage')}}" class="btn btn-default">No</a>
+    </div>
+</form>
+{% endblock %}

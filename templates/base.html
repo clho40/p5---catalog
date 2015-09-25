@@ -1,0 +1,100 @@
+<html>
+  <head>
+      <!--This is a base template, act as a master file for every page. Child content will be inserted into corresponding blocks-->
+    <title>Catalog</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="txt/css" href="{{url_for('static',filename='simple-sidebar.css')}}">
+    <!--Any header contents on child template goes here-->
+    {% block header %}{% endblock %}
+  </head>
+  <body>
+      <!-- TOP NAV BAR -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{url_for('IndexPage')}}">
+                    Catalog
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" style="width:100%">
+                <ul class="nav navbar-nav" style="float:right;white-space: nowrap;width=100%;">
+                    <!--Check if user is logged in. If user is logged it, display it's picture and name and logout button, else, show login button-->
+                    {% if logged_in %}
+                        <li class="top_li">
+                            <img src="{{picture}}" class="thumbnail">
+                            <a>{{username}}</a>
+                        </li>
+                        <li class="top_li"><a href="{{url_for('disconnect')}}">Logout</a></li>
+                    {% else %}
+                    <li class="top_li"><a href="{{url_for('showLogin')}}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--For content below top menu-->
+    <div id="wrapper">
+        <!--Nav Bar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <!--Populate list of catagories on sidebar-->
+                {% for catagory in catagories %}
+                <li>
+                    <a href="{{url_for('showProducts',cid=catagory.id)}}">{{catagory.name}}</a>
+                </li>
+                {% endfor %}
+                <!--If user is logged in, display button for create new catagory and new product-->
+                {% if logged_in %}
+                <li>
+                    <a href="{{url_for('newCatagory')}}">Create new catagory</a>
+                </li>
+                <li>
+                    <a href="{{url_for('newProduct')}}">Create new product</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        
+        <!-- Page Content (On the right side)-->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!--Message alert -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        {% for category,message in messages %}
+                        <div class="alert {{ category }}">
+                            <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{message}}</strong>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                        
+                        <!--Child content goes here-->
+                        <div id="content">
+                            {% block content %} {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <!--Any scripts required by child templete goes here-->
+    <!-- scripts -->
+    {% block scripts %}{% endblock %}
+    <!-- /#scripts -->
+  </body>
+</html>
