@@ -76,6 +76,6 @@ class Product(Base):
 ############################
 
 ########## Footer ##########
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('postgresql+psycopg2://catalog:catalog@localhost/catalog')
 Base.metadata.create_all(engine)
 ############################

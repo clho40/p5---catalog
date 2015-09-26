@@ -6,7 +6,7 @@ from database_setup import Base,Catagory,Product,User
 from sqlalchemy import desc
 from flask import jsonify
 import os
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('postgresql+psycopg2://catalog:catalog@localhost/catalog')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
